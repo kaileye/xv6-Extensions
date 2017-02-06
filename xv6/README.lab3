@@ -1,0 +1,44 @@
+Team: Arthur Chan and Kaile Ye  (aychan and kaye)
+
+Exercise 1
+
+A system call was added for nice, which accepts a value to add to the current nice value.
+The default value is 0, maximum is 19, and minimum is -20.
+Whenever it is set past the maximum/minimum, it will be set the the maximum/minimum.
+
+The test for nice, nicetest, is run through xv6.
+It calls nice() with various values and prints the call/output.
+
+Exercise 2
+
+The pseudo-random number generator uses the algorithm found on https://en.wikipedia.org/wiki/Xorshift, under the example implementation.
+(Marsaglia, George (July 2003). "Xorshift RNGs". Journal of Statistical Software 8 (14).)
+
+The test for the pseudo-random number generator, prngtest, is run through xv6.
+It generates 640000 numbers, counts the number of occurrences of the number % 64, and displays it.
+
+Exercise 3
+
+The lottery scheduler is implemented with an array of process addresses.
+Each process is given tickets equal to the difference of 22 and its nice value.
+Each ticket is an entry in the tickets array.
+An integer holds the total number of tickets.
+When scheduler is called, tickets are distributed and the process at offset pseudo-random number % total from the array is selected.
+To compile xv6 with the original round robin scheduling, use "make qemu-nox-RR"
+
+Exercise 4
+The tests create processes that will increment a counter until a certain value, then print a statement before exiting.
+
+schedulertest1 demonstrates that priority is taken to account when scheduling.
+4 processes are created with different nice values.
+
+schedulertest2 demonstrates that when all processes are at the same priority,
+they are given equal chances to run and finish in roughly the same amount of time.
+The test first adds 4 processes with a nice value of 19, then after they exit, 4 more are added with a nice value of -20. 
+
+schedulertest3 demonstrates that the priority of a process changes correctly when its nice value is updated.
+2 process are created with nice=0 to prevent the next two from having full control of the cpus.
+The next two processes have nice=19.
+The nice value of one of these is periodically decremented.
+Whenever either of the two processes reaches a multiple of 2500 increments, a statment is printed.
+As the nice value of one process decreases, the frequency of its print statements should increase.
